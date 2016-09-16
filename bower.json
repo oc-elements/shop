@@ -19,7 +19,12 @@
     "iron-pages": "polymerelements/iron-pages#^1.0.0",
     "iron-selector": "polymerelements/iron-selector#^1.0.0",
     "paper-icon-button": "polymerelements/paper-icon-button#^1.0.0",
-    "paper-spinner": "polymerelements/paper-spinner#^1.0.0"
+    "paper-spinner": "polymerelements/paper-spinner#^1.0.0",
+    "oc-signin": "git://github.com/oc-elements/oc-signin#1.x",
+    "oc-user-api": "git://github.com/oc-elements/oc-user-api#1.x",
+    "oc-app-behaviour": "git://github.com/oc-elements/oc-app-behaviour#1.x",
+    "oc-core-utils": "git://github.com/oc-elements/oc-core-utils#1.x"
+
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

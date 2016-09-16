@@ -19,6 +19,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="shop-category-data.html">
+<link rel="import" href="../bower_components/oc-signin/oc-signin.html">
+<link rel="import" href="../bower_components/oc-app-behaviour/oc-app-behaviour.html">
+
 <!-- Since 'home' is the default route, eagerly load it. -->
 <link rel="import" href="shop-home.html">
 
@@ -222,7 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <shop-analytics key="UA-39334307-16"></shop-analytics>
+    <!--<shop-analytics key="UA-39334307-16"></shop-analytics>-->
     <!--
       app-location and app-route elements provide the state of the URL for the app.
     -->
@@ -270,6 +273,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </a>
           <div class="cart-badge" aria-hidden="true" hidden$="[[!numItems]]">[[numItems]]</div>
         </div>
+        <oc-signin user="{{ user }}" signed-in="{{ signedIn }}"></oc-signin>
       </app-toolbar>
 
       <!-- Lazy-create the tabs for larger screen sizes. -->
@@ -321,6 +325,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- a11y announcer -->
     <div class="announcer" aria-live="assertive">[[_a11yLabel]]</div>
 
+
+
   </template>
 
   <script>
@@ -331,6 +337,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
 
       is: 'shop-app',
+      behaviors: [OC.Behaviours.App],
 
       properties: {
 
