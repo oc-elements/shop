@@ -56,7 +56,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         flex-basis: 33%;
         max-width: 33%;
       }
-      
+
       .grid a {
         display:block;
         text-decoration: none;
@@ -74,34 +74,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
+      .no-items p {
+        text-align: center;
+        font-size: 20px;
+      }
+
     </style>
 
     <!--
       app-route provides the name of the category.
     -->
     <app-route
-        route="[[route]]"
-        pattern="/:category"
-        data="{{routeData}}"></app-route>
+            route="[[route]]"
+            pattern="/:category"
+            data="{{routeData}}"></app-route>
 
     <!--
       shop-category-data provides the category data for a given category name.
     -->
     <shop-category-data
-        id="categoryData"
-        category-name="[[routeData.category]]"
-        category="{{category}}"
-        failure="{{failure}}"></shop-category-data>
+            id="categoryData"
+            category-name="[[routeData.category]]"
+            category="{{category}}"
+            organisation-id="{{organisationId}}"
+            failure="{{failure}}"
+            loading="{{loading}}"
+    ></shop-category-data>
 
     <shop-image
-        alt="[[category.title]]"
-        src="[[category.image]]"
-        placeholder-img="[[category.placeholder]]" class="hero-image"></shop-image>
+            src="[[category.image]]"
+            class="hero-image"></shop-image>
 
     <header>
-      <h1>[[category.title]]</h1>
+      <h1>[[category.name]]</h1>
       <span>[[_getPluralizedQuantity(category.items.length)]]</span>
     </header>
+
+    <div class="no-items" hidden$="{{_checkItemLength(category.items)}}">
+      <p>No Menu Items to Display</p>
+    </div>
 
     <ul class="grid" hidden$="[[failure]]">
       <template is="dom-repeat" items="[[_getListItems(category.items)]]" initial-count="4">
@@ -110,15 +121,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </li>
       </template>
     </ul>
-    
+
     <!--
       shop-network-warning shows a warning message when the items can't be rendered due
       to network conditions.
     -->
     <shop-network-warning
-        hidden$="[[!failure]]"
-        offline="[[offline]]"
-        on-try-reconnect="_tryReconnect"></shop-network-warning>
+            hidden$="[[!failure]]"
+            offline="[[offline]]"
+            on-try-reconnect="_tryReconnect"></shop-network-warning>
 
   </template>
 
@@ -129,6 +140,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'shop-list',
 
       properties: {
+
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+
+        organisationId: Number,
 
         category: Object,
 
@@ -159,7 +177,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getItemHref: function(item) {
         // By returning null when `itemId` is undefined, the href attribute won't be set and
         // the link will be disabled.
-        return item.name ? ['/detail', this.category.name, item.name].join('/') : null;
+        return item.description ? ['/detail', this.category.urlName, item.urlName].join('/') : null;
       },
 
       _getPluralizedQuantity: function(quantity) {
@@ -190,6 +208,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (!offline) {
           this._tryReconnect();
         }
+      },
+
+      _checkItemLength : function(items, loading){
+        return (!loading && items && items.length > 0)
       }
 
     });

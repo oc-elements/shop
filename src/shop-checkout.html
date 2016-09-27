@@ -426,6 +426,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+
         /**
          * The route for the state. e.g. `success` and `error` are mounted in the
          * `checkout/` route.

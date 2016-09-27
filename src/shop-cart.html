@@ -76,6 +76,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       properties: {
 
+        loading: {
+          type: Boolean,
+          notify: true
+        },
+
         total: Number,
 
         cart: Array,
@@ -93,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _formatTotal: function(total) {
-        return isNaN(total) ? '' : '$' + total.toFixed(2);
+        return isNaN(total) ? '' : 'R ' + total.toFixed(2);
       },
 
       _computeHasItem: function(cartLength) {

@@ -166,12 +166,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <a href$="/detail/[[entry.item.category]]/[[entry.item.name]]" title$="[[entry.item.title]]">
-      <shop-image src="[[entry.item.image]]" alt="[[entry.item.title]]"></shop-image>
+    <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]" title$="[[entry.item.name]]">
+      <shop-image src="[[entry.item.featuredImage]]" alt="[[entry.item.name]]"></shop-image>
     </a>
     <div class="flex">
       <div class="name">
-        <a href$="/detail/[[entry.item.category]]/[[entry.item.name]]">[[entry.item.title]]</a>
+        <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]">[[entry.item.name]]</a>
       </div>
       <div class="detail">
         <div class="quantity">
@@ -195,13 +195,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <shop-md-decorator aria-hidden="true"></shop-md-decorator>
           </shop-select>
         </div>
-        <div class="size">Size: <span>[[entry.size]]</span></div>
+
         <div class="price">[[_formatPrice(entry.item.price)]]</div>
 
         <!--
           Use on-click instead of on-tap to prevent the next cart item to be focused
         -->
-        <paper-icon-button class="delete-button" icon="close" aria-label$="Delete item [[entry.item.title]]"
+        <paper-icon-button class="delete-button" icon="close" aria-label$="Delete item [[entry.item.name]]"
             on-click="_removeItem"></paper-icon-button>
       </div>
     </div>
@@ -232,7 +232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _formatPrice: function(price) {
-        return price ? '$' + price.toFixed(2) : '';
+        return price ? 'R ' + price.toFixed(2) : '';
       },
 
       _removeItem: function() {
