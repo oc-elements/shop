@@ -10,7 +10,9 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
     npm install -g polymer-cli
 
 Install [Bower](https://bower.io/)
-   `npm install -g bower`
+   ```
+   npm install -g bower
+   ```
 
 
 
