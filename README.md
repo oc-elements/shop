@@ -9,15 +9,13 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
     npm install -g polymer-cli
 
+Install [Bower](https://bower.io/)
+    npm install -g bower
+
 
 ##### Setup
-    # Using CLI
-    mkdir shop
-    cd shop
-    polymer init shop
-    
-    # Or cloning direct from GitHub
-    git clone https://github.com/Polymer/shop.git
+    # Fork and clone directly from GitHub
+    git clone {{your forked repo}}
     cd shop
     bower install
 
@@ -25,20 +23,8 @@ Install [polymer-cli](https://github.com/Polymer/polymer-cli):
 
     polymer serve
 
-### Run web-component-tester tests
-
-    polymer test
 
 ### Build
 
     polymer build
 
-### Test the build
-
-This command serves the minified version of the app in an unbundled state, as it would be served by a push-compatible server:
-
-    polymer serve build/unbundled
-    
-This command serves the minified version of the app generated using fragment bundling:
-
-    polymer serve build/bundled
