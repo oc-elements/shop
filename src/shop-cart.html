@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shop-button.html">
+<link rel="import" href="to-shop-button.html">
 <link rel="import" href="shop-common-styles.html">
 <link rel="import" href="shop-form-styles.html">
 
@@ -17,28 +18,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
 
-    <style include="shop-common-styles shop-button shop-form-styles">
+    <style include="shop-common-styles shop-button to-shop-button shop-form-styles">
+    header {
+      background: #1f4488;
+      padding: 10px 0;
+      color: #fff;
+    }
 
       .list {
-        margin: 40px 0;
+        margin: 0 0 20px 0;
       }
 
       .checkout-box {
         font-weight: bold;
         text-align: right;
-        margin-right: 10px;
       }
 
-      .subtotal {
-        margin: 0 64px 0 24px;
-      }
+
 
       @media (max-width: 767px) {
 
         .subtotal {
           margin: 0 0 0 24px;
         }
+        .subtotal-container {
+          background: #172c50;
+          color: #fff;
 
+        }
+      }
+
+      /* item container styling */
+      shop-cart-item {
+        border:1px solid #cccccc;
+      }
+      shop-cart-item {
+        position: relative;
+      }
+      shop-cart-item:nth-child(odd) {
+        background: #edf0f5;
+        margin-top: -1px;
+      }
+      shop-cart-item:nth-child(even) {
+        margin-top: -1px;
+      }
+      .subtotal-container {
+        padding: 10px;
       }
 
     </style>
@@ -49,8 +74,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <div class="subsection" visible$="[[_hasItems]]">
         <header>
-          <h1>Your Cart</h1>
-          <span>([[_getPluralizedQuantity(cart.length)]])</span>
+          <h1>Cart</h1>
+          <!--<span>([[_getPluralizedQuantity(cart.length)]])</span>-->
         </header>
         <div class="list">
           <template is="dom-repeat" items="[[cart]]" as="entry">
@@ -58,7 +83,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
         </div>
         <div class="checkout-box">
-          Total: <span class="subtotal">[[_formatTotal(total)]]</span>
+          <div class="subtotal-container">
+            ([[_getPluralizedQuantity(cart.length)]]) Total: <span>[[_formatTotal(total)]]</span>
+          </div>
+          <to-shop-button responsive>
+            <a href="/shop">Back to Shop</a>
+          </to-shop-button>
           <shop-button responsive>
             <a href="/checkout">Checkout</a>
           </shop-button>
@@ -73,9 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
 
       is: 'shop-cart',
-
       properties: {
-
         loading: {
           type: Boolean,
           notify: true

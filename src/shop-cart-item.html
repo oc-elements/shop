@@ -7,10 +7,11 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="shop-icons.html">
 <link rel="import" href="shop-image.html">
 <link rel="import" href="shop-select.html">
@@ -19,17 +20,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template strip-whitespace>
 
-    <style include="shop-select">
+    <style include="shop-select iron-flex iron-flex-alignment">
 
       :host {
         @apply(--layout-horizontal);
         position: relative;
-        margin-bottom: 24px;
       }
 
       shop-image {
-        width: 72px;
-        height: 72px;
+        margin: 10px;
       }
 
       shop-select > select {
@@ -42,14 +41,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border: none;
       }
 
+      paper-button {
+        margin: 0;
+        border-radius: 0;
+      }
+
       .name {
         @apply(--layout-flex-auto);
         line-height: 20px;
         font-weight: 500;
         float: left;
-        width: calc(100% - 438px);
-        margin-top: 26px;
+        margin-top: 12px;
         margin-right: 30px;
+
       }
 
       .name a {
@@ -60,6 +64,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 1.2em;
+      }
+
+      .mobile-name {
+        display: none;
+      }
+
+      .mobile-name a {
+        color: #172c50;
+        text-decoration: none;
       }
 
       .price, .size {
@@ -78,8 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .price {
-        min-width: 70px;
-        width: 100px;
+        padding: 5px 0;
       }
 
       .quantity {
@@ -92,8 +105,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 34px;
         color: var(--app-secondary-color);
         position: absolute;
-        top: 18px;
-        right: 0;
+        top: 6px;
+        right: -10px;
       }
 
       .flex {
@@ -105,9 +118,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .detail {
         @apply(--layout-horizontal);
         @apply(--layout-center);
-        margin-top: 26px;
+        margin-top: 32px;
         margin-right: 30px;
         height: 20px;
+      }
+
+      /* Item quantity controls */
+      .item-quantity {
+        @apply(--layout-horizontal);
+        padding: 5px;
+        color:#757575;
+      }
+      .item-quantity-input {
+        border: 1px solid #ccc;
+      }
+      .item-quantity-input input {
+        font-size:16px;
+        height: 18px;
+        border: none;
+        padding-left: 10px;
+        width:40px;
+      }
+      .item-quantity-input-button {
+        border: 1px solid #ccc;
+      }
+
+      .cart-detail-item {
+        padding: 5px;
+        max-width: 50%;
+      }
+      
+      /* helper classes */
+      .visible-mobile {
+        display: none;
       }
 
       @media (max-width: 767px) {
@@ -123,11 +166,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .detail {
+          @apply(--layout-vertical);
           @apply(--layout-self-end);
-          margin: 10px 10px 0 0;
+          margin: 10px 10px 20px 0;
+
         }
 
-        .quantity, .size, .price {
+        .quantity, .size {
           text-align: right;
           width: auto;
         }
@@ -135,11 +180,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         .delete-button {
           top: 8px;
         }
+        .item-quantity-input input {
+          width: 30px !important;
+          font-size: 14px;
+        }
+
+        .item-quantity-position {
+          position: absolute;
+          bottom: 20px;
+          right: 80px;
+        }
+        .item-price-position {
+          position: absolute;
+          bottom: 16px;
+          right: 16px;
+          text-align: right;
+        }
+
+        .mobile-name {
+          display: block;
+          font-size: 1.1em;
+          margin-top: 16px;
+        /* helper */
+        }
+        .hidden-mobile {
+          display: none !important;
+        }
       }
 
       @media (max-width: 360px) {
         .name {
           margin-top: 0;
+        }
+        .mobile-name {
+          font-size: 13px !important;
         }
 
         .detail {
@@ -151,63 +225,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         .delete-button {
-          top: -6px;
+          top: -2px;
+          right: -16px;
         }
 
         shop-select > select {
           padding: 2px 24px 2px 40px;
         }
 
-        .quantity, .size, .price {
+        .quantity, .size {
           text-align: left;
           width: auto;
         }
+
+        .visible-mobile {
+          display: block;
+        }
+        .item-quantity-input input {
+          height: 18px !important;
+          font-size: 14px !important;
+        }
       }
 
-    </style>
-
-    <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]" title$="[[entry.item.name]]">
-      <shop-image src="[[entry.item.featuredImage]]" alt="[[entry.item.name]]"></shop-image>
-    </a>
-    <div class="flex">
-      <div class="name">
-        <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]">[[entry.item.name]]</a>
-      </div>
-      <div class="detail">
-        <div class="quantity">
-          <shop-select>
-            <label prefix>Qty:</label>
-            <select id="quantitySelect" aria-label="Change quantity" value="[[entry.quantity]]"
-                on-change="_quantityChange">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-            <shop-md-decorator aria-hidden="true"></shop-md-decorator>
-          </shop-select>
+  </style>
+    <div class="layout horizontal">
+        <div class="cart-detail-item">
+          <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]" title$="[[entry.item.name]]">
+            <shop-image src="[[entry.item.featuredImage]]" alt="[[entry.item.name]]"></shop-image>
+          </a>
         </div>
-
-        <div class="price">[[_formatPrice(entry.item.price)]]</div>
-
-        <!--
-          Use on-click instead of on-tap to prevent the next cart item to be focused
-        -->
-        <paper-icon-button class="delete-button" icon="close" aria-label$="Delete item [[entry.item.name]]"
-            on-click="_removeItem"></paper-icon-button>
+        <div class="cart-detail-item hidden-mobile">
+          <div class="name">
+            <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]">[[entry.item.name]]</a>
+            <p class="hidden-mobile">[[entry.item.description]]</p>
+          </div>
+        </div>
+        <div class="cart-detail-item" horizontalAlign="right">
+          <div class="detail">
+            <div class="mobile-name">
+              <a href$="/detail/[[entry.item.category]]/[[entry.item.urlName]]">[[entry.item.name]]</a>
+            </div>
+            <div class="price item-price-position">[[_formatPrice(entry.item.price)]]</div>
+            <!-- <div class="quantity">
+              <shop-select>
+            </div>-->
+            <span class="item-quantity hidden-mobile">Quantitiy </span>
+            <div class="item-quantity-input item-quantity-position">
+                <input id="quantitySelect" is="iron-input" value="[[entry.quantity]]" prevent-invalid-input allowed-pattern="[0-9]" min="1" max="10" type="number" class="item-quantity-input" on-change="_quantityChange">
+            </div>
+            <!--
+              Use on-click instead of on-tap to prevent the next cart item to be focused
+            -->
+            <paper-button class="delete-button" icon="close" aria-label$="Delete item [[entry.item.name]]"
+                on-click="_removeItem"><iron-icon icon="icons:highlight-off"></iron-icon></paper-button>
+          </div>
+        </div>
       </div>
-    </div>
   </template>
-
-  <script>
+<script>
 
     Polymer({
 
@@ -220,7 +295,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _quantityChange: function() {
-        this._setCartItem(parseInt(this.$.quantitySelect.value, 10));
+        this._setCartItem(parseInt(this.$.quantitySelect.value));
+        if (this.$.quantitySelect.value <= 0) {
+          this._setCartItem(0);
+        }
       },
 
       _setCartItem: function(quantity) {
@@ -238,9 +316,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _removeItem: function() {
         this._setCartItem(0);
       }
-
     });
-
   </script>
-
 </dom-module>
