@@ -147,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 5px;
         max-width: 50%;
       }
-      
+
       /* helper classes */
       .visible-mobile {
         display: none;
@@ -295,7 +295,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _quantityChange: function() {
-        this._setCartItem(parseInt(this.$.quantitySelect.value));
+        this._setCartItem(parseInt(this.$.quantitySelect.value, 10));
         if (this.$.quantitySelect.value <= 0) {
           this._setCartItem(0);
         }
