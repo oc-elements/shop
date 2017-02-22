@@ -55,7 +55,7 @@ deployment:
   test:
     branch: develop
     commands:
-      - firebase deploy --token=1/mgFoQmcckNZZdFr1PNwVEMXhyxQ5M59Lx3kROyzcLlc --non-interactive --project shop-dev-a2310
+      - firebase deploy --token=1/7rpXtPrh9k_39d33lKWMfwAEOKhskJEagF3fnV5MCaA --non-interactive --project shop-dev-a2310
 
 ## Custom notifications
 notify:
