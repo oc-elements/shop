@@ -62,7 +62,7 @@
             _tryReconnect: function() {
                 window.location = [
                     OC.authHost, 'oauth/implicit?response_type=token&client_id=', OC.authClientId,
-                    '&redirect_uri=', encodeURIComponent(window.location.origin + '/oauth')
+                    '&redirect_uri=', encodeURIComponent(window.location.origin + 'oauth')
                 ].join('');
             }
         });
