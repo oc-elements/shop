@@ -266,8 +266,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             num-items="{{numItems}}"
             total="{{total}}"></shop-cart-data>
 
-    <app-header hidden$={{!signedIn}} role="navigation" id="header" effects="waterfall" condenses reveals>
-      <app-toolbar>
+    <app-header role="navigation" id="header" effects="waterfall" condenses reveals>
+      <!-- if user logged in -->
+      <app-toolbar hidden$={{!signedIn}} >
         <div class="left-bar-item">
           <paper-icon-button
                   class="menu-btn"
@@ -284,6 +285,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <a href="/cart" tabindex="-1">
             <paper-icon-button icon="shopping-cart" aria-label$="Shopping cart: [[_computePluralizedQuantity(numItems)]]"></paper-icon-button>
           </a>
+          <div class="cart-badge" aria-hidden="true" hidden$="[[!numItems]]">[[numItems]]</div>
+        </div>
+        <sign-in user="{{ user }}" signed-in="{{ signedIn }}"  failure="{{failure}}"></sign-in>
+      </app-toolbar>
+      <!-- if user not logged in -->
+      <app-toolbar hidden$={{signedIn}} >
+        <div class="left-bar-item">
+          <paper-icon-button
+                  class="menu-btn"
+                  icon="menu"
+                  on-click="_toggleDrawer"
+                  aria-label="Categories">
+          </paper-icon-button>
+          <a class="back-btn" href="/list/[[categoryName]]" tabindex="-1">
+            <paper-icon-button icon="arrow-back" aria-label="Go back"></paper-icon-button>
+          </a>
+        </div>
+        <div class="logo" main-title><a href="/" aria-label="SHOP Home">SHOP</a></div>
+        <div class="cart-btn-container">
+            <paper-icon-button icon="shopping-cart" on-tap="signIn"></paper-icon-button>
           <div class="cart-badge" aria-hidden="true" hidden$="[[!numItems]]">[[numItems]]</div>
         </div>
         <sign-in user="{{ user }}" signed-in="{{ signedIn }}"  failure="{{failure}}"></sign-in>
@@ -318,7 +339,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
 
     <div class="spinner">
-      <paper-spinner active="{{_showLoading(loading, signedIn)}}"></paper-spinner>
+      <paper-spinner active="{{_showLoading(loading, signedIn, hasViewToken)}}"></paper-spinner>
     </div>
 
     <iron-pages role="main" selected="[[page]]" attr-for-selected="name" selected-attribute="visible" hidden$="{{_pagesHidden(loading, signedIn)}}">
@@ -334,7 +355,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <shop-checkout name="checkout" cart="[[cart]]" total="[[total]]" route="{{subroute}}" loading="{{loading}}"></shop-checkout>
     </iron-pages>
 
-    <sign-in-error signed-out="{{signedIn}}"></sign-in-error>
+    <sign-in-error signed-out="{{signedIn}} "  has-view-token="{{hasViewToken}}"></sign-in-error>
 
     <footer>
       <p>Made by Ordercloud with Polymer</p>
@@ -368,6 +389,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Number,
           value: OC.clientId
         },
+        //check if a viewer token is configured
+        hasViewToken: {
+          type: Boolean,
+          notify : true,
+          value: function () {return (OC.viewToken || 0 !== OC.viewToken.length);}
+        },
+
+        viewToken: {
+          type: String,
+          value: OC.viewToken
+        },
 
         organisation: Object,
 
@@ -396,8 +428,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       observers: [
-        '_routePageChanged(routeData.page)',
-        '_signedIn(signedIn)'
+        '_routePageChanged(routeData.page, signedIn)',
+        '_signedIn(signedIn, hasViewToken)'
       ],
 
       listeners: {
@@ -425,10 +457,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.loading = true;
       },
 
-      _signedIn : function(signedIn){
+      _signedIn : function(signedIn, hasViewToken){
 
-        if (!this.signedIn) {
+        if (!signedIn&&!hasViewToken) {
           return;
+        }
+
+        if(!signedIn) {
+          OC.token = OC.viewToken;
         }
 
         this._getOrgFromHeader();
@@ -443,6 +479,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _routePageChanged: function(page) {
+
 
         this.page = page || 'home';
 
@@ -597,11 +634,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _pagesHidden : function(loading, signedIn) {
-        return (loading || !signedIn);
+        return (loading);
       },
 
-      _showLoading : function(loading, signedIn) {
-        return (loading && signedIn);
+      _showLoading : function(loading, signedIn, hasViewToken) {
+        return (loading && signedIn || loading && hasViewToken);
+      },
+
+      signIn: function() {
+        // TODO implement "state"
+
+        window.location = [
+          OC.authHost, 'oauth/implicit?response_type=token&client_id=', OC.authClientId,
+          '&redirect_uri=', encodeURIComponent(window.location.href + '/oauth')
+        ].join('');
       }
 
 

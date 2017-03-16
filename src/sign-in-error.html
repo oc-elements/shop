@@ -38,7 +38,8 @@
 
         </style>
 
-        <div hidden$="[[signedOut]]">
+        <!--displays if the view token is empty and not singed in-->
+        <div hidden$="[[signedOut]]&&[[hasViewToken]]">
             <h1>Please log In</h1>
             <shop-button>
                 <button on-tap="_tryReconnect">Login</button>
@@ -54,7 +55,8 @@
             is: 'sign-in-error',
 
             properties: {
-                signedOut: Boolean
+                signedOut: Boolean,
+                hasViewToken: Boolean
             },
 
             _tryReconnect: function() {

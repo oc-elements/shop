@@ -25,6 +25,10 @@
             <paper-button on-tap="signOut">Logout</paper-button>
         </template>
 
+        <template is="dom-if" if="{{ !signedIn }}">
+            <paper-button on-tap="signIn">Sign In</paper-button>
+        </template>
+
         <app-location route="{{ route }}"></app-location>
         <app-route route="[[ route ]]" pattern="/oauth" tail="{{ routeData }}"></app-route>
 
@@ -133,6 +137,9 @@
 
             _setToken: function (val) {
                 this.$.storage.value = this.token = OC.token = val;
+                if(val == null) {
+                    OC.token = OC.viewToken;
+                }
                 this.$.storage.save();
             },
 
